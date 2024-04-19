@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="../statics/style.css" />
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mr+De+Haviland&family=Roboto:wght@400;500;700&display=swap"
@@ -11,6 +11,175 @@
     <title>Product Page</title>
 </head>
 <body>
-    <!-- Your content goes here -->
+    <header>
+        <div class="navbar">
+          <a href="/">
+            <img src="/static/images/logo.png" alt="" class="logo" id="logo" />
+          </a>
+          <ul id="topnav" class="topnav">
+            <li id="topnav-item"><a href="/">Home</a></li>
+            <li id="topnav-item"><a href="/product">Products</a></li>
+            <li id="topnav-item"><a href="/contact">Contact</a></li>
+            <li id="topnav-item"><a href="/account">Account</a></li>
+          </ul>
+          <a href="#cart"
+            ><button type="button" class="cart" id="cart">
+              <ion-icon name="basket-outline"></ion-icon></button></a>
+        </div>
+    </header>
+    <section class="section product" id="product" aria-label="product">
+        <div class="container">
+  
+          <div class="title-wrapper">
+            <h2 class="h2 section-title">Popular Products</h2>
+  
+            <ul class="filter-btn-list">
+  
+              <li class="filter-btn-item">
+                <button class="filter-btn active" data-filter-btn="all">All Products</button>
+              </li>
+  
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="accessory">Accessory</button>
+              </li>
+  
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="decoration">Decoration</button>
+              </li>
+  
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="furniture">Furniture</button>
+              </li>
+  
+            </ul>
+          </div>
+  
+        <ul class="grid-list product-list" data-filter="all">
+            {% for product in accessory_products %}
+                <li class="accessory">
+                    <div class="product-card">
+                        <a href="/product/{{product.product_id}}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                            <img src="{{ product.image }}" width="300" height="300" loading="lazy" alt="{{ product.name }}"
+                                class="img-cover">
+                            <ul class="card-action-list">
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                        <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                                        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                            </ul>
+                            {% if product.in_stock == 0 %}
+                                <div class="card-badge">Out of Stock</div>
+                            {% endif %}
+                        </a>
+                        <div class="card-content">
+                            <h3 class="h3">
+                                <a href="/product/{{product.product_id}}" class="card-title">{{ product.name }}</a>
+                            </h3>
+                            <div class="card-price">
+                                {% if product.discount %}
+                                    <del class="del">${{ product.price }}</del>
+                                    <data class="price" value="{{ product.discount_price }}">${{ product.discount_price }}</data>
+                                {% else %}
+                                    <data class="price" value="{{ product.price }}">${{ product.price }}</data>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+
+            {% for product in furniture_products %}
+                <li class="furniture">
+                    <div class="product-card">
+                        <a href="/product/{{product.product_id}}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                            <img src="{{ product.image }}" width="300" height="300" loading="lazy" alt="{{ product.name }}"
+                                class="img-cover">
+                            <ul class="card-action-list">
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                        <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                                        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                            </ul>
+                            {% if product.in_stock == 0 %}
+                                <div class="card-badge">Out of Stock</div>
+                            {% endif %}
+                        </a>
+                        <div class="card-content">
+                            <h3 class="h3">
+                                <a href="/product/{{product.product_id}}" class="card-title">{{ product.name }}</a>
+                            </h3>
+                            <div class="card-price">
+                                {% if product.discount %}
+                                    <del class="del">${{ product.price }}</del>
+                                    <data class="price" value="{{ product.discount_price }}">${{ product.discount_price }}</data>
+                                {% else %}
+                                    <data class="price" value="{{ product.price }}">${{ product.price }}</data>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+
+            {% for product in decoration_products %}
+                <li class="decoration">
+                    <div class="product-card">
+                        <a href="/product/{{product.product_id}}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                            <img src="{{ product.image }}" width="300" height="300" loading="lazy" alt="{{ product.name }}"
+                                class="img-cover">
+                            <ul class="card-action-list">
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                        <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                                        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                                    </button>
+                                </li>
+                            </ul>
+                            {% if product.in_stock == 0 %}
+                                <div class="card-badge">Out of Stock</div>
+                            {% endif %}
+                        </a>
+                        <div class="card-content">
+                            <h3 class="h3">
+                                <a href="/product/{{product.product_id}}" class="card-title">{{ product.name }}</a>
+                            </h3>
+                            <div class="card-price">
+                                {% if product.discount %}
+                                    <del class="del">${{ product.price }}</del>
+                                    <data class="price" value="{{ product.discount_price }}">${{ product.discount_price }}</data>
+                                {% else %}
+                                    <data class="price" value="{{ product.price }}">${{ product.price }}</data>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+  
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../static/elements.js"></script>
+    <script src="../static/solid.js"></script>
+    <script src="../static/filter.js"></script>
 </body>
 </html>

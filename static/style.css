@@ -393,12 +393,13 @@ li a:hover {
 
 .product-card .card-badge {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   background-color: var(--black);
   color: var(--white);
   font-weight: var(--fw-500);
   padding-inline: 15px;
+  font-size: 20px;
 }
 
 .product-card .h3 { font-size: unset; }
