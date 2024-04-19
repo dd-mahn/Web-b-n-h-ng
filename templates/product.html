@@ -19,14 +19,20 @@
           <ul id="topnav" class="topnav">
             <li id="topnav-item"><a href="/">Home</a></li>
             <li id="topnav-item"><a href="/product">Products</a></li>
-            <li id="topnav-item"><a href="/contact">Contact</a></li>
-            <li id="topnav-item"><a href="/account">Account</a></li>
+            {% if user.is_authenticated %}
+              <li id="topnav-item"><a href="/account/{{user.id}}">{{ user.username }}</a></li>
+            {% else %}
+              <li id="topnav-item"><a href="/register">Register</a></li>
+              <li id="topnav-item"><a href="/login">Login</a></li>
+            {% endif %}
           </ul>
-          <a href="#cart"
-            ><button type="button" class="cart" id="cart">
-              <ion-icon name="basket-outline"></ion-icon></button></a>
+          <a href="#cart">
+            <button type="button" class="cart" id="cart">
+              <ion-icon name="basket-outline"></ion-icon>
+            </button>
+          </a>
         </div>
-    </header>
+      </header>
     <section class="section product" id="product" aria-label="product">
         <div class="container">
   
