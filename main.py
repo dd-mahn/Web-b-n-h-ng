@@ -15,32 +15,33 @@ sqldbname = 'data/shiopdb.db'
 # Index route
 @app.route('/')
 def index():
-    return render_template('index.html')
+    user = request.args.get('user')
+    return render_template('index.html', user=user)
 
-# Product route
 @app.route('/product')
 def product():
-
-    # Fetch all products from the API
+    user = request.args.get('user')
     response = requests.get('http://localhost:5000/products')
     products = response.json()
-
-    # Split products into 3 categories
     accessory_products = [product for product in products if product['category'] == 'accessory']
     furniture_products = [product for product in products if product['category'] == 'furniture']
     decoration_products = [product for product in products if product['category'] == 'decoration']
-
-    # Pass the categories to the template
-    return render_template('product.html', accessory_products=accessory_products, furniture_products=furniture_products, decoration_products=decoration_products)
+    return render_template('product.html', accessory_products=accessory_products, furniture_products=furniture_products, decoration_products=decoration_products, user=user)
 
 @app.route('/product/<int:id>')
 def product_detail(id):
-    # Fetch the product from the API
+    user = request.args.get('user')
     response = requests.get(f'http://localhost:5000/products/{id}')
     product = response.json()
+    return render_template('product_detail.html', product=product, user=user)
 
-    # Pass the product to the template
-    return render_template('product_detail.html', product=product)
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 # _____API
 
@@ -167,30 +168,30 @@ def get_accounts():
     conn.close()
     return jsonify(accounts)
 
-# Handle Login
-@app.route('/login', methods=['POST'])
-def login():
-    conn = sqlite3.connect(sqldbname)
-    c = conn.cursor()
-    c.execute('SELECT * FROM account WHERE username = ? AND password = ?', 
-              (request.json['username'], request.json['password']))
-    user = c.fetchone()
-    conn.close()
-    if user is not None:
-        return 'Login successful', 200
-    else:
-        return 'Login failed', 401
+# # Handle Login
+# @app.route('/login', methods=['POST'])
+# def login():
+#     conn = sqlite3.connect(sqldbname)
+#     c = conn.cursor()
+#     c.execute('SELECT * FROM account WHERE username = ? AND password = ?', 
+#               (request.json['username'], request.json['password']))
+#     user = c.fetchone()
+#     conn.close()
+#     if user is not None:
+#         return 'Login successful', 200
+#     else:
+#         return 'Login failed', 401
     
-# Handle Register
-@app.route('/register', methods=['POST'])
-def register():
-    conn = sqlite3.connect(sqldbname)
-    c = conn.cursor()
-    c.execute('INSERT INTO account (username, password) VALUES (?, ?)', 
-              (request.json['username'], request.json['password']))
-    conn.commit()
-    conn.close()
-    return 'Register successful', 201
+# # Handle Register
+# @app.route('/register', methods=['POST'])
+# def register():
+#     conn = sqlite3.connect(sqldbname)
+#     c = conn.cursor()
+#     c.execute('INSERT INTO account (username, password) VALUES (?, ?)', 
+#               (request.json['username'], request.json['password']))
+#     conn.commit()
+#     conn.close()
+#     return 'Register successful', 201
 
 
 

@@ -123,12 +123,14 @@ body.active { overflow: hidden; }
   aspect-ratio: var(--width) / var(--height);
   background-color: var(--light-gray);
   overflow: hidden;
+  border-radius: 5px;
 }
 
 .img-cover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 5px;
 }
 
 .h2,
@@ -302,6 +304,12 @@ li a:hover {
   flex-direction: column;
 }
 
+.cta a{
+  background: tan;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
 .product {
   padding-top: 6rem;
   width: 100%;
@@ -432,6 +440,33 @@ li a:hover {
 .product-list[data-filter="furniture"] > .furniture {
   display: block;
   animation: fadeUp 1s ease forwards;
+}
+
+.product-detail{
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 50px;
+  gap: 10px;
+}
+
+.product-detail > div{
+  padding: 20px;
+}
+
+.product-detail > div > ul{
+  margin-top: 20px;
+  display: flex;
+  gap:10px;
+}
+
+.product-detail > div > ul .detail-action-btn{
+  font-size: 30px;
+}
+
+.product-detail > div > ul .detail-action-btn:hover{
+  color: var(--tan-crayola);
+  transition: .3s linear;
 }
 
 @keyframes fadeUp {
