@@ -168,6 +168,20 @@ li a:hover {
   transition: 0.5s ease;
 }
 
+.d-flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:20px;
+}
+
+.d-flex-col-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .navbar {
   display: flex;
   justify-content: space-around;
@@ -498,6 +512,242 @@ li a:hover {
   border-radius: 5px;
   background: var(--tan-crayola);
   color: #FFF;
+}
+
+.account{
+  height: 80vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+  padding: 5rem 2rem;
+  gap:3rem;
+}
+
+.account h2{
+  margin-bottom: 2rem;
+}
+
+.account .account-info div{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: .7rem;
+}
+
+.account .account-info button{
+  margin-top: 0.5rem;
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--tan-crayola);
+  color: #FFF;
+}
+
+.account .account-info button:hover{
+  opacity: .8;
+  transition: .3s linear;
+}
+
+.account .account-orders > div{
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  padding: 0 20px;
+}
+
+.account .account-orders > div > div{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid #333;
+  padding: 10px 20px;
+}
+
+.account .account-favorites > div{
+  display: flex;
+  flex-wrap: wrap;
+  width: 460px;
+  justify-content: start;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  gap: 20px
+}
+
+.account .account-favorites > div img{
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+}
+
+.account .account-favorites > div img:hover{
+  filter: brightness(0.8);
+  transition: 0.5s ease;
+}
+
+.dialog:not([open]) {
+  display: none;
+}
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border:none;
+  border-radius:5px;
+}
+
+.dialog::backdrop{
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dialog form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+
+.dialog form input{
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  margin-top: .5rem;
+}
+
+.dialog :nth-child(4){
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.dialog :nth-child(4) button{
+  padding: 10px;
+  border-radius: 5px;
+  width: 200px;
+  background: var(--tan-crayola);
+  color: #fff;
+}
+
+.dialog :nth-child(4) button:hover{
+  opacity: 0.8;
+  transition: .3s linear;
+}
+
+.cart-section{
+  padding:5rem 2rem;
+}
+
+.cart-container{
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap:3rem;
+}
+
+.cart-items{
+  display: flex;
+  width: 1000px;
+  flex-wrap:wrap;
+  gap: 1rem;
+}
+
+.cart-item{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: .5rem;
+  position: relative;
+}
+
+.cart-item :nth-child(2){
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart-item :nth-child(2) :nth-child(2){
+  color: var(--tan-crayola);
+}
+
+.cart-item button{
+  position: absolute;
+  top:10px;
+  right:10px;
+  font-size: 24px;
+}
+
+.cart-item button:hover{
+  color: var(--tan-crayola);
+  transition:.3s linear
+}
+
+.cart-total{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+}
+
+.cart-total p{
+  font-size:24px;
+  color: var(--tan-crayola);
+}
+
+.cart-total button{
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--tan-crayola);
+  color: #fff;
+}
+
+.cart-total button:hover{
+  opacity: 0.8;
+  transition: .3s linear;
+}
+
+.cart-dialog-title{
+  margin-bottom: 1rem;
+}
+
+.cart-dialog-inputs{
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  gap:10px
+}
+
+.cart-dialog-inputs input{
+  margin-top: 0 !important;
+  margin-bottom: 1rem;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+.cart-dialog-buttons{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cart-dialog-buttons button{
+  padding: 10px;
+  border-radius: 5px;
+  width: 130px;
+  background: var(--tan-crayola);
+  color: #fff;
+}
+
+.cart-dialog-buttons button:hover{
+  opacity: 0.8;
+  transition: .3s linear;
 }
 
 @keyframes fadeUp {

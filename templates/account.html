@@ -11,12 +11,138 @@
     <title>Account</title>
 </head>
 <body>
-    <div>
-        <h1>Welcome, {{ session.user.name }}</h1>
-        <p>Email: {{ session.user.email }}</p>
-        <button>Change Password</button>
-    </div>
-    <!-- Your content goes here -->
+    <header>
+        <div class="navbar">
+          <a href="/">
+            <img src="/static/images/logo.png" alt="" class="logo" id="logo" />
+          </a>
+          <ul id="topnav" class="topnav">
+            <li id="topnav-item"><a href="/">Home</a></li>
+            <li id="topnav-item"><a href="/product">Products</a></li>
+            {% if user != None %}
+              <li id="topnav-item"><a href="/account">Account</a></li>
+              <li id="topnav-item"><a href="/logout">Logout</a></li>
+            {% else %}
+              <li id="topnav-item"><a href="/register">Register</a></li>
+              <li id="topnav-item"><a href="/login">Login</a></li>
+            {% endif %}
+          </ul>
+        {% if user != None %}
+            <a href="/cart">
+                <button type="button" class="cart" id="cart">
+                    <ion-icon name="basket-outline"></ion-icon>
+                </button>
+            </a>
+        {% else %}
+            <a href="/login">
+                <button type="button" class="cart" id="cart">
+                    <ion-icon name="basket-outline"></ion-icon>
+                </button>
+            </a>
+        {% endif %}
+        </div>
+    </header>
+    <container class="account">
+        <section class="section d-flex-col-center account-info">
+            <h2 class="h2 section-title">Account</h2>
+            <div>
+                <p>Username: {{ session.user.username }}</p>
+                <p>Email: {{ session.user.email }}</p>
+                <button class="change-btn">Change Password</button>
+            </div>
+        </section>
+        <section class="section d-flex-col-center account-orders">
+            <h2 class="h2 section-title">Orders</h2>
+            <div>
+                {% for order in orders %}
+                <div>
+                    <h1>Order {{ order.id }}</h1>
+                    <p>Order Date: {{ order.time }}</p>
+                    <p>Order Total: ${{ order.total }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="section d-flex-col-center account-favorites">
+            <h2 class="h2 section-title">Favorites</h2>
+            <div>
+                {% for product in products %}
+                <a href="/product/{{ product.product_id }}">
+                    <img src="{{ product.image }}" width="100" height="100" loading="lazy" alt="{{ product.name }}" class="product-image">
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+    </container>
+
+    <dialog class="dialog d-flex-col-center change-password">
+        <h2 class="h2 section-title">Change Password</h2>
+        <form>
+            <div>
+                <label for="current-password">Current Password:</label>
+                <input type="password" id="current-password" name="current_password" required>
+            </div>
+            <div>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new_password" required>
+            </div>
+            <div>
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm_password" required>
+            </div>
+            <div>
+                <button type="button" class="close-btn">Close</button>
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        const changeBtn = document.querySelector('.change-btn');
+        const dialog = document.querySelector('.change-password');
+        const form = dialog.querySelector('form');
+
+        changeBtn.addEventListener('click', () => {
+            dialog.showModal();
+        });
+
+        dialog.querySelector('.close-btn').addEventListener('click', () => {
+            dialog.close();
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const old_password = form.querySelector('#current-password').value;
+            const new_password = form.querySelector('#new-password').value;
+            const confirmPassword = form.querySelector('#confirm-password').value;
+
+            if (new_password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            fetch('/accounts/{{user.id}}', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'old_password':old_password, 'new_password':new_password }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                alert('Password changed successfully!');
+                dialog.close();
+            })
+            .catch(error => {
+                console.error(error);
+                // Display error message
+            });
+        });
+    </script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

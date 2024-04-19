@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mr+De+Haviland&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet">
+    <title>Cart</title>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+          <a href="/">
+            <img src="/static/images/logo.png" alt="" class="logo" id="logo" />
+          </a>
+          <ul id="topnav" class="topnav">
+            <li id="topnav-item"><a href="/">Home</a></li>
+            <li id="topnav-item"><a href="/product">Products</a></li>
+            {% if user != None %}
+              <li id="topnav-item"><a href="/account">Account</a></li>
+              <li id="topnav-item"><a href="/logout">Logout</a></li>
+            {% else %}
+              <li id="topnav-item"><a href="/register">Register</a></li>
+              <li id="topnav-item"><a href="/login">Login</a></li>
+            {% endif %}
+          </ul>
+        {% if user != None %}
+            <a href="/cart">
+                <button type="button" class="cart" id="cart">
+                    <ion-icon name="basket-outline"></ion-icon>
+                </button>
+            </a>
+        {% else %}
+            <a href="/login">
+                <button type="button" class="cart" id="cart">
+                    <ion-icon name="basket-outline"></ion-icon>
+                </button>
+            </a>
+        {% endif %}
+        </div>
+    </header>
+    <section class="section cart-section d-flex-col-center">
+        <h2 class="h2 section-title">Cart</h2>
+        <div class="container cart-container">
+            <div class="cart-items">
+                {% for item in products %}
+                <div class="cart-item" data-product-id={{ item.product_id }}>
+                    <img src="{{ item.image }}" alt="" class="cart-item-image" />
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-name">{{ item.name }}</h3>
+                        <p class="cart-item-price">${{ item.price }}</p>
+                        <p class="cart-item-quantity">Quantity: {{ item.quantity }}</p>
+                    </div>
+                    <button type="button" class="cart-item-remove" data-product-id={{ item.product_id }}>
+                        <ion-icon name="close-outline"></ion-icon>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cart-total">
+                <h3 class="cart-total-title">Total</h3>
+                <p class="cart-total amount">${{ total_price }}</p>
+                <button type="button" class="cart-checkout">Checkout</button>
+            </div>
+        </div>
+    </section>
+    <dialog class="cart-dialog dialog d-flex-col-center">
+        <h2 class="cart-dialog-title">Order Details</h2>
+        <form class="cart-dialog-inputs">
+            <label for="phone">Phone:</label>
+            <input type="number" id="phone" class="cart-dialog-input" placeholder="Phone" />
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" class="cart-dialog-input" placeholder="Address" />
+        </form>
+        <div class="cart-dialog-buttons">
+            <button type="button" class="order-button">Order</button>
+            <button type="button" class="cart-dialog-button">Close</button>
+        </div>
+    </dialog>
+
+    <script>
+        const dialog = document.querySelector('.cart-dialog');
+
+        const removeItem = async (product_id) => {
+            const cartItem = document.querySelector(`[data-product-id="${product_id}"]`);
+            const confirmRemove = confirm('Are you sure you want to remove this item from the cart?');
+            
+            if (confirmRemove) {
+            cartItem.remove();
+
+            await fetch(`/cart/${product_id}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+
+                alert('Item removed from cart!');
+                updateTotalPrice();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            }
+        }
+
+        const make_order = () => {
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+
+            fetch('/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'phone':phone, 'address':address }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                alert('Order placed successfully!');
+                await dialog.close();
+
+                window.location.href = '/account';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        document.querySelectorAll('.cart-item-remove').forEach(item => {
+            const productId = item.getAttribute('data-product-id');
+            item.addEventListener('click', () => removeItem(productId));
+        });
+
+        document.querySelector('.cart-checkout').addEventListener('click', () => {
+            dialog.showModal();
+        });
+
+        dialog.querySelector('.cart-dialog-button').addEventListener('click', () => {
+            dialog.close();
+        });
+
+        dialog.querySelector('.order-button').addEventListener('click', () => make_order());
+    </script>
+    <!-- Your cart content goes here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../static/solid.js"></script>
+</body>
+</html>
