@@ -1,3 +1,5 @@
+'use strict';
+
 const ctaLink = document.querySelector(".shop");
 
 ctaLink.addEventListener("click", function (event) {
