@@ -11,28 +11,37 @@
     <title>{{product.name}}</title>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-          <a href="/">
-            <img src="/static/images/logo.png" alt="" class="logo" id="logo" />
-          </a>
-          <ul id="topnav" class="topnav">
-            <li id="topnav-item"><a href="/">Home</a></li>
-            <li id="topnav-item"><a href="/product">Products</a></li>
-            {% if user.is_authenticated %}
-              <li id="topnav-item"><a href="/account/{{user.id}}">{{ user.username }}</a></li>
-            {% else %}
-              <li id="topnav-item"><a href="/register">Register</a></li>
-              <li id="topnav-item"><a href="/login">Login</a></li>
-            {% endif %}
-          </ul>
-          <a href="#cart">
+  <header>
+    <div class="navbar">
+      <a href="/">
+        <img src="/static/images/logo.png" alt="" class="logo" id="logo" />
+      </a>
+      <ul id="topnav" class="topnav">
+        <li id="topnav-item"><a href="/">Home</a></li>
+        <li id="topnav-item"><a href="/product">Products</a></li>
+        {% if user != None %}
+          <li id="topnav-item"><a href="/account">Account</a></li>
+          <li id="topnav-item"><a href="/logout">Logout</a></li>
+        {% else %}
+          <li id="topnav-item"><a href="/register">Register</a></li>
+          <li id="topnav-item"><a href="/login">Login</a></li>
+        {% endif %}
+      </ul>
+    {% if user != None %}
+        <a href="/cart">
             <button type="button" class="cart" id="cart">
-              <ion-icon name="basket-outline"></ion-icon>
+                <ion-icon name="basket-outline"></ion-icon>
             </button>
-          </a>
-        </div>
-      </header>
+        </a>
+    {% else %}
+        <a href="/login">
+            <button type="button" class="cart" id="cart">
+                <ion-icon name="basket-outline"></ion-icon>
+            </button>
+        </a>
+    {% endif %}
+    </div>
+  </header>
       <section class="section product" id="product" aria-label="product">
         <div class="container">
             <h2 class="h2 section-title">Product Detail</h2>
@@ -46,12 +55,12 @@
                 <p>Stock: {{ product.in_stock }}</p>
                 <ul class="detail-action-list">
                   <li>
-                      <button class="detail-action-btn" aria-label="add to cart" title="add to cart">
+                      <button class="cart-action-btn detail-action-btn" aria-label="add to cart" title="add to cart">
                           <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
                       </button>
                   </li>
                   <li>
-                      <button class="detail-action-btn" aria-label="add to wishlist" title="add to wishlist">
+                      <button class="favorite-action-btn detail-action-btn" aria-label="add to Favorite" title="add to wishlist">
                           <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
                       </button>
                   </li>
@@ -60,6 +69,59 @@
             </div>
             
       </section>
+      <script>
+        async function addToCart(){
+          let productId = "{{ product.product_id }}";
+          let userId = "{{ user.id }}";
+          
+          if({{product.in_stock}} == 0){
+            alert('Product out of stock');
+            return;
+          }
+          // Add the product to the cart with quantity 1
+          try {
+            const response = await fetch('/cart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ product_id: productId, user_id: userId, quantity: 1 }),
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            alert('Product added to cart successfully');
+          } catch (error) {
+            alert('Error adding product to cart');
+          }
+        }
+
+        async function addToFavorite(){
+          let productId = "{{ product.product_id }}";
+          let userId = "{{ user.id }}";
+
+          // Add the product to the favorite list
+          try {
+            const response = await fetch('/favorite', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ product_id: productId, user_id: userId }),
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            alert('Product added to favorite successfully');
+          } catch (error) {
+            alert('Error adding product to favorite');
+          }
+        }
+
+        document.querySelector('.cart-action-btn').addEventListener('click', addToCart);
+        document.querySelector('.favorite-action-btn').addEventListener('click', addToFavorite);
+
+      </script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
       <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

@@ -76,18 +76,17 @@ ion-icon { pointer-events: none; }
 
 address { font-style: normal; }
 
-html {
-  font-family: var(--ff-roboto);
+html,
+body {
+  width: 100%;
+  height: 100%;
   scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--white);
   color: var(--black);
-
 }
-
-body.active { overflow: hidden; }
 
 :focus-visible { outline-offset: 4px; }
 
@@ -103,19 +102,15 @@ body.active { overflow: hidden; }
 
 .container { padding-inline: 15px; }
 
-.social-wrapper {
-  display: flex;
-  align-items: center;
-}
+.social-wrapper,
+.social-list { display: flex; }
 
-.social-list {
-  display: flex;
-  gap: 30px;
-}
+.social-list { gap: 30px; }
 
 .social-link { transition: var(--transition-1); }
 
-.social-link:is(:hover, :focus) { color: var(--tan-crayola); }
+.social-link:hover,
+.social-link:focus { color: var(--tan-crayola); }
 
 .section { padding-block: var(--section-padding); }
 
@@ -146,7 +141,7 @@ body.active { overflow: hidden; }
 
 .grid-list {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
   margin-block: 40px 75px;
   gap: 35px;
   justify-items: center;
@@ -160,14 +155,6 @@ body.active { overflow: hidden; }
 .has-before::before {
   content: "";
   position: absolute;
-}
-
-head,
-html,
-body {
-  width: 100%;
-  height: 100%;
-  scroll-behavior: smooth;
 }
 
 a {
@@ -207,7 +194,6 @@ li a:hover {
   text-align: center;
   position: relative;
   color: #212020;
-  /* font-family: "Tilt Neon", serif; */
 }
 
 #topnav-item:hover {
@@ -278,7 +264,7 @@ li a:hover {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  height: 100vh;
+  height: 90vh;
   width: 50%;
   margin-left: 20%;
 }
@@ -305,7 +291,7 @@ li a:hover {
 }
 
 .cta a{
-  background: tan;
+  background: #F1EFE7;
   padding: 10px 20px;
   border-radius: 5px;
 }
@@ -350,7 +336,8 @@ li a:hover {
   transition: var(--transition-1);
 }
 
-.product-card .card-banner:is(:hover, :focus-within)::before { opacity: 1; }
+.product-card .card-banner:hover::before,
+.product-card .card-banner:focus-within::before { opacity: 1; }
 
 .product-card .card-action-list {
   position: absolute;
@@ -363,7 +350,8 @@ li a:hover {
   transition: var(--transition-2);
 }
 
-.product-card .card-banner:is(:hover, :focus-within) .card-action-list {
+.product-card .card-banner:hover .card-action-list,
+.product-card .card-banner:focus-within .card-action-list {
   transform: translate(-50%, -50%);
   opacity: 1;
 }
@@ -376,7 +364,8 @@ li a:hover {
   transition: var(--transition-1);
 }
 
-.product-card .card-action-btn:is(:hover, :focus) { color: var(--tan-crayola); }
+.product-card .card-action-btn:hover,
+.product-card .card-action-btn:focus { color: var(--tan-crayola); }
 
 .product-card .badge-list {
   position: absolute;
@@ -417,10 +406,10 @@ li a:hover {
   font-weight: var(--fw-500);
   margin-block: 18px 5px;
   transition: var(--transition-1);
-  
 }
 
-.product-card .card-title:is(:hover, :focus) { color: var(--tan-crayola); }
+.product-card .card-title:hover,
+.product-card .card-title:focus { color: var(--tan-crayola); }
 
 .product-card .card-price {
   display: flex;
@@ -442,7 +431,7 @@ li a:hover {
   animation: fadeUp 1s ease forwards;
 }
 
-.product-detail{
+.product-detail {
   display: flex;
   justify-content: center;
   align-items: start;
@@ -450,23 +439,65 @@ li a:hover {
   gap: 10px;
 }
 
-.product-detail > div{
-  padding: 20px;
-}
+.product-detail > div { padding: 20px; }
 
-.product-detail > div > ul{
+.product-detail > div > ul {
   margin-top: 20px;
   display: flex;
-  gap:10px;
+  gap: 10px;
 }
 
-.product-detail > div > ul .detail-action-btn{
+.product-detail > div > ul .detail-action-btn {
   font-size: 30px;
 }
 
-.product-detail > div > ul .detail-action-btn:hover{
+.product-detail > div > ul .detail-action-btn:hover {
   color: var(--tan-crayola);
   transition: .3s linear;
+}
+
+.register-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.register-form{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 30vw;
+  height: 55vh;
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 5px;
+
+}
+
+.register-form h2{
+  margin-bottom: 20px;
+}
+
+.register-form form {
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form form input{
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+.register-form form button{
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background: var(--tan-crayola);
+  color: #FFF;
 }
 
 @keyframes fadeUp {
