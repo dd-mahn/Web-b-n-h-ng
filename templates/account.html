@@ -58,7 +58,10 @@
                 <div>
                     <h1>Order {{ order.id }}</h1>
                     <p>Order Date: {{ order.time }}</p>
-                    <p>Order Total: ${{ order.total }}</p>
+                    <p>Phone Number: {{ order.phone }}</p>
+                    <p>Address: {{ order.address }}</p>
+                    <p>Total: ${{ order.total }}</p>
+                    <p>Order Status: {{ order.status }}</p>
                 </div>
                 {% endfor %}
             </div>

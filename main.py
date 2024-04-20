@@ -66,7 +66,10 @@ def account():
         order_dict = {
             'id': order[0],
             'total': order[3],
-            'time': order[2]
+            'address': order[5],
+            'time': order[2],
+            'status': order[6],
+            'phone': order[4],
         }
         orders.append(order_dict)
     
@@ -434,8 +437,8 @@ def make_order():
     current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Create an order
-    c.execute('INSERT INTO orders (account_id, time, total, phone, address) VALUES (?, ?, ?, ?, ?)',
-              (user['id'], current_time, total_price, phone, address))
+    c.execute('INSERT INTO orders (account_id, time, total, phone, address, status) VALUES (?, ?, ?, ?, ?, ?)',
+              (user['id'], current_time, total_price, phone, address, 'on-going'))
 
     # Clear the cart
     c.execute('DELETE FROM cart WHERE account_id = ?', (user['id'],))
